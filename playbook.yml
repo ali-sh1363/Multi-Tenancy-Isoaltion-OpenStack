@@ -1,0 +1,11 @@
+---
+- hosts: containers
+  user: root  
+  gather_facts: True
+
+  roles:
+    - tenant-isolation
+
+
+
+...

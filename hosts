@@ -1,0 +1,7 @@
+[all]
+
+[controller]
+controller00 ansible_connection=local
+
+[containers]
+utility_container

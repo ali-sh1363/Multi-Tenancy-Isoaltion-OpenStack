@@ -1,0 +1,62 @@
+---
+ 
+  - name: getting tennat ID
+    shell: openstack --os-cloud default project list | awk '/ {{ tenant_name }} / {print $2}'
+    register: tent1
+
+    
+#  - name: creating new host aggregate
+#    command: openstack --os-cloud default aggregate create {{ agg_name }}
+
+    
+  - name: getting aggregate ID
+    shell: openstack --os-cloud default aggregate list | awk '/ {{ agg_name }} / {print $2}'
+    register: aggre1
+
+
+#  - name: adding hosts to host aggregate
+#    command: openstack --os-cloud default aggregate add host {{ aggre1.stdout }} {{ item.name }}
+#    with_items: compute
+ 
+
+#  - name: update hos aggregate metadata
+#    shell: source /root/openrc && nova --insecure aggregate-set-metadata {{ aggre1.stdout }} filter_tenant_id={{ tent1.stdout }}
+#    args:
+#      executable: /bin/bash
+
+
+#  - name:  create a custtom flavor
+#    shell: source /root/openrc && nova --insecure flavor-create {{ flavor_name }} auto {{ flavor_ram }} {{ flavor_disk }} {{ flavor_cpu }} --is-public false    
+#    args:
+#      executable: /bin/bash
+#    os_nova_flavor:
+#      cloud: default
+#      state: present
+#      name: '{{ flavor_name }}'
+#      ram: 1024
+#      vcpus: 2
+#      disk: 10
+#      is_public: no
+
+
+#  - name: Grant access to custom flavor for tenant
+#    shell: source /root/openrc && nova --insecure flavor-access-add {{ flavor_name }} {{ tent1.stdout }}
+#    args:
+#      executable: /bin/bash
+ 
+#  - name: Add flavor key to new flavor
+#    shell: source /root/openrc && nova --insecure flavor-key {{ flavor_name }} set filter_tenant_id={{ tent1.stdout }}
+#    args:
+#      executable: /bin/bash
+
+#  - name: Update default Cinder quota to allow volume type access
+#    shell: source /root/openrc && cinder --insecure quota-update --volumes 100 --volume-type backendB {{ tent1.stdout }}
+#    with_items: allow_vol_type
+#    args:
+#      executable: /bin/bash
+#    with_items: allow_vol_type
+
+  - name: Update default Cinder quota to restrict volume type access
+    shell: source /root/openrc && cinder --insecure quota-update --volumes 0 --volume-type backendB {{ tent1.stdout }}
+    args:
+      executable: /bin/bash
